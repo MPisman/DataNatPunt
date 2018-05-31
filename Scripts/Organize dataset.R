@@ -18,8 +18,9 @@ levels(DataNatPun$Species)
 levels(DataNatPun$Soortnaam)
 
 #Change non-species level entries to NA in "Species" and "Soortnaam"
+DataNatPun$Species<-as.factor(gsub("*spec.*", NA, DataNatPun$Species))
+DataNatPun$Soortnaam<-as.factor(gsub("*spec.*",NA,DataNatPun$Soortnaam))
 
-
-DataNatPunSpec <- filter(DataNatPun,grepl("/|-", DataNatPun$Soortnaam))
-
-levels(DataNatPunSpec$Soortnaam)
+#Check new levels
+levels(DataNatPun$Species)
+levels(DataNatPun$Soortnaam)
