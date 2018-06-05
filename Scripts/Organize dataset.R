@@ -1,6 +1,8 @@
 #Load packages
 library(tidyverse)
 
+##Dataset bees pantraps and transects
+
 #Load raw dataset
 DataNatPun<-read.csv("D:\\OneDrive - UGent\\PhD wild pollinators\\Project Bijenindicator Natuurpunt\\Dataset kleurvallen plus transects.csv")
 #Check dataset levels
@@ -56,3 +58,29 @@ DataNatPunSoort<- DataNatPun %>%
   summarise(Aantal=sum(Aantal))
 
 #Dataset checked: difference in Species and Soortnaam levels caused by fucata, gibbus and hyalinatus belonging to 2 genera
+
+
+#Dataset plantencomposition per location
+
+#Load raw dataset
+DataNatPunPlant<-read.csv("D:\\OneDrive - UGent\\PhD wild pollinators\\Project Bijenindicator Natuurpunt\\Dataset plantensoorten per locatie per tijdstip.csv")
+
+#Change column locations to rows
+DataNatPunPlant<-gather(data=DataNatPunPlant, key="Location", value="Abundance",select=5:83)
+#Delete columns with NA values
+DataNatPunPlant<-filter(DataNatPunPlant, !is.na(Abundance)) %>%
+  #Seperate location and period into 2 columns
+  separate(Location, c("Lokatie","Periode"), "_") %>%
+  select(Lokatie, Periode, Familie, Genus, Latijnse.soortsnaam, Nederlandse.soortsnaam, Abundance)
+#Set Location and Period as factor
+DataNatPunPlant$Lokatie<-as.factor(DataNatPunPlant$Lokatie)
+DataNatPunPlant$Periode<-as.factor(DataNatPunPlant$Periode)
+
+
+#Dataset GIS analyse
+
+#Load raw dataset
+DataNatPunGIS<-read.csv("D:\\OneDrive - UGent\\PhD wild pollinators\\Project Bijenindicator Natuurpunt\\Landschapsanalyse locaties.csv")
+
+#Select relevant columns
+DataNatPunGIS<-select(DataNatPunGIS, Lokatie, Habitat, Afstand, PercSNPos, PercAkker)
